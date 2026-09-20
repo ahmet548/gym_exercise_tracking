@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egzersiz Kalori Analizi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Sayısal input oklarını gizleme */
+        input[type="number"]::-webkit-inner-spin-button, 
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type="number"] { -moz-appearance: textfield; }
+        
+        .form-input {
+            width: 100%;
+            border-radius: 0.375rem;
+            border: 1px solid #e2e8f0;
+            background-color: #ffffff;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: #1e293b;
+            transition: all 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #2563eb;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #eff6ff;
+            padding-bottom: 0.5rem;
+        }
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4 sm:p-8">
+
+    <div class="bg-white w-full max-w-5xl rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden">
+        
+        <!-- Üst Başlık (Header) -->
+        <div class="bg-white border-b border-slate-100 px-8 py-6 flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Kapsamlı Kalori Analizi</h1>
+                <p class="text-sm text-slate-500 mt-1">Egzersiz ve biyometrik verilerinize dayalı kişiselleştirilmiş enerji tüketim raporu.</p>
+            </div>
+            <div class="hidden sm:flex h-12 w-12 bg-blue-50 text-blue-600 rounded-full items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            </div>
+        </div>
+
+        <form id="predictForm" class="p-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- 1. Fiziksel Özellikler -->
+                <div>
+                    <h2 class="section-title">Fiziksel Özellikler</h2>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="form-label">Yaş</label><input type="number" id="Age" value="28" class="form-input" required></div>
+                            <div><label class="form-label">Cinsiyet</label><select id="Gender" class="form-input"><option value="Male">Erkek</option><option value="Female">Kadın</option></select></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="form-label">Boy (m)</label><input type="number" step="0.01" id="Height" value="1.80" class="form-input" required></div>
+                            <div><label class="form-label">Kilo (kg)</label><input type="number" step="0.1" id="Weight" value="75.0" class="form-input" required></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="form-label">Vücut Kitle İndeksi</label><input type="number" step="0.1" id="BMI" value="23.1" class="form-input" required></div>
+                            <div><label class="form-label">Yağ Oranı (%)</label><input type="number" step="0.1" id="Fat_Percentage" value="15.0" class="form-input" required></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Egzersiz Profili -->
+                <div>
+                    <h2 class="section-title">Egzersiz Profili</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="form-label">Antrenman Tipi</label>
+                            <select id="Workout_Type" class="form-input">
+                                <option value="Cardio">Kardiyovasküler (Cardio)</option>
+                                <option value="HIIT" selected>Yüksek Yoğunluklu (HIIT)</option>
+                                <option value="Strength">Kuvvet / Ağırlık (Strength)</option>
+                                <option value="Yoga">Yoga / Esneme</option>
+                            </select>
+                        </div>
+                        <div><label class="form-label">Antrenman Süresi (Saat)</label><input type="number" step="0.1" id="Session_Duration" value="1.5" class="form-input" required></div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="form-label">Haftalık Sıklık</label><input type="number" id="Workout_Frequency" value="4" class="form-input" required></div>
+                            <div><label class="form-label">Deneyim (1-3)</label><input type="number" id="Experience_Level" value="2" min="1" max="3" class="form-input" required></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Biyometrik Ölçümler -->
+                <div>
+                    <h2 class="section-title">Biyometrik Ölçümler</h2>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="form-label">Maks. Nabız (BPM)</label><input type="number" id="Max_BPM" value="175" class="form-input" required></div>
+                            <div><label class="form-label">Ort. Nabız (BPM)</label><input type="number" id="Avg_BPM" value="140" class="form-input" required></div>
+                        </div>
+                        <div><label class="form-label">Dinlenik Nabız (BPM)</label><input type="number" id="Resting_BPM" value="65" class="form-input" required></div>
+                        <div><label class="form-label">Günlük Su Tüketimi (Litre)</label><input type="number" step="0.1" id="Water_Intake" value="2.0" class="form-input" required></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Alt Bar (Buton ve Sonuç) -->
+            <div class="mt-10 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+                <button type="submit" id="submitBtn" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-8 rounded-lg shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 min-w-[200px]">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <span>Analizi Başlat</span>
+                </button>
+
+                <!-- Sonuç Gösterimi -->
+                <div id="resultBox" class="hidden flex-1 w-full flex items-center justify-end">
+                    <div class="bg-blue-50 border border-blue-100 rounded-lg py-3 px-6 flex items-center gap-4 w-full sm:w-auto justify-center sm:justify-start">
+                        <div class="h-10 w-10 bg-white rounded-full flex items-center justify-center shadow-sm text-blue-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-blue-600 uppercase tracking-wider">Tahmini Tüketim</p>
+                            <p class="text-2xl font-bold text-slate-800 leading-none mt-1">
+                                <span id="resultText">0</span> <span class="text-sm font-medium text-slate-500">kcal</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hata Mesajı -->
+                <div id="errorBox" class="hidden w-full flex-1 bg-red-50 text-red-600 text-sm py-3 px-4 rounded-lg border border-red-100 text-center sm:text-left">
+                    <span id="errorText"></span>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('predictForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitBtn');
+            const resultBox = document.getElementById('resultBox');
+            const errorBox = document.getElementById('errorBox');
+            const resultText = document.getElementById('resultText');
+            
+            // Yükleniyor durumu
+            const originalBtnText = btn.innerHTML;
+            btn.innerHTML = '<svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span>İşleniyor...</span>';
+            btn.disabled = true;
+            btn.classList.add('opacity-90');
+            
+            resultBox.classList.add('hidden');
+            errorBox.classList.add('hidden');
+
+            const payload = {
+                "Age": parseInt(document.getElementById('Age').value),
+                "Gender": document.getElementById('Gender').value,
+                "Weight (kg)": parseFloat(document.getElementById('Weight').value),
+                "Height (m)": parseFloat(document.getElementById('Height').value),
+                "Max_BPM": parseInt(document.getElementById('Max_BPM').value),
+                "Avg_BPM": parseInt(document.getElementById('Avg_BPM').value),
+                "Resting_BPM": parseInt(document.getElementById('Resting_BPM').value),
+                "Session_Duration (hours)": parseFloat(document.getElementById('Session_Duration').value),
+                "Workout_Type": document.getElementById('Workout_Type').value,
+                "Fat_Percentage": parseFloat(document.getElementById('Fat_Percentage').value),
+                "Water_Intake (liters)": parseFloat(document.getElementById('Water_Intake').value),
+                "Workout_Frequency (days/week)": parseInt(document.getElementById('Workout_Frequency').value),
+                "Experience_Level": parseInt(document.getElementById('Experience_Level').value),
+                "BMI": parseFloat(document.getElementById('BMI').value)
+            };
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultText.textContent = data.predicted_calories_burned.toFixed(1);
+                    resultBox.classList.remove('hidden');
+                } else {
+                    document.getElementById('errorText').textContent = 'Kayıt Hatası: ' + (data.detail[0]?.msg || JSON.stringify(data.detail));
+                    errorBox.classList.remove('hidden');
+                }
+            } catch (err) {
+                document.getElementById('errorText').textContent = 'Sistem bağlantı hatası. API sunucusu çevrimdışı olabilir.';
+                errorBox.classList.remove('hidden');
+            } finally {
+                btn.innerHTML = originalBtnText;
+                btn.disabled = false;
+                btn.classList.remove('opacity-90');
+            }
+        });
+    </script>
+</body>
+</html>

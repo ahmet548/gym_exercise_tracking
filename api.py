@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import joblib
 import pandas as pd
@@ -7,6 +8,14 @@ import numpy as np
 app = FastAPI(
     title="Fitness Kalori Tahmin API",
     description="Egzersiz verilerine göre yakılan kaloriyi tahmin eden servis."
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # Geliştirme ortamı için tüm portlara izin verir
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Eğitilmiş nesneleri yükleme
@@ -44,6 +53,11 @@ def predict_calories(data: ExerciseInput):
         # 2. Kategorik değişkenleri OneHotEncode et
         cat_features = input_df[['Workout_Type', 'Gender']]
         encoded_array = ohe.transform(cat_features)
+        
+        # EKLENEN KISIM: Eğer sıkıştırılmış (sparse) formattaysa, standart matrise (array) çevir
+        if hasattr(encoded_array, 'toarray'):
+            encoded_array = encoded_array.toarray()
+            
         encoded_cols = ohe.get_feature_names_out(['Workout_Type', 'Gender'])
         encoded_df = pd.DataFrame(encoded_array, columns=encoded_cols)
         
